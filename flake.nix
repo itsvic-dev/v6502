@@ -18,7 +18,12 @@
         pkgs = import nixpkgs { inherit system; };
       in
       {
-        devShells.default = pkgs.mkShell { nativeBuildInputs = with pkgs; [ meson ]; };
+        devShells.default = pkgs.mkShell {
+          nativeBuildInputs = with pkgs; [
+            meson
+            ninja
+          ];
+        };
       }
     );
 }
