@@ -7,6 +7,10 @@ OPCODE(ldx);
 OPCODE(stx);
 OPCODE(ldy);
 OPCODE(sty);
+OPCODE(pha);
+OPCODE(php);
+OPCODE(pla);
+OPCODE(plp);
 
 OPCODE(nop) {
   (void)cpu;
@@ -52,4 +56,9 @@ std::map<uint8_t, Opcode> cpuOpcodes = {
     {0x8C, {"STY $nnnn", sty, ABSOLUTE}},
     {0x84, {"STY $nn", sty, ZERO_PAGE}},
     {0x94, {"STY $nn,X", sty, X_ZERO_PAGE}},
+
+    {0x48, {"PHA", pha}},
+    {0x68, {"PLA", pla}},
+    {0x08, {"PHP", php}},
+    {0x28, {"PLP", plp}},
 };

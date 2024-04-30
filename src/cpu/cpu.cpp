@@ -88,7 +88,7 @@ void CPU::evaluateFlags(uint8_t value) {
 }
 
 void CPU::pushStack(uint8_t data) { bus->write(0x100 + sp--, data); }
-uint8_t CPU::popStack() { return bus->read(0x100 + sp++); }
+uint8_t CPU::popStack() { return bus->read(0x100 + ++sp); }
 
 void CPU::reset() {
   // CPU does 3 fake writes to the stack during reset

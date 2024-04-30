@@ -14,8 +14,14 @@ public:
   }
   ~SimpleRAMBus() { delete[] ram; }
 
-  uint8_t read(uint16_t addr) override { return ram[addr]; }
-  void write(uint16_t addr, uint8_t data) override { ram[addr] = data; }
+  uint8_t read(uint16_t addr) override {
+    print("BUS R ${:04x} = ${:02x}\n", addr, ram[addr]);
+    return ram[addr];
+  }
+  void write(uint16_t addr, uint8_t data) override {
+    print("BUS W ${:04x} = ${:02x}\n", addr, data);
+    ram[addr] = data;
+  }
 
 private:
   uint8_t *ram;
@@ -23,10 +29,13 @@ private:
 
 /*
 lda #69
-sta $0200
+pha
+lda #0
+pla
+nop
 */
-const char *program = "\xA9\x45\x8D\x00\x02";
-const size_t programSize = 5;
+const char *program = "\xA9\x45\x48\xA9\x00\x68\xEA";
+const size_t programSize = 7;
 
 int main() {
   SimpleRAMBus bus;
@@ -46,6 +55,5 @@ int main() {
   while (cpu.pc >= 0x6000 && cpu.pc < 0x6000 + programSize) {
     cpu.executeStep();
   }
-  print("value of $0200 is {}\n", bus.read(0x0200));
   return 0;
 }

@@ -15,6 +15,7 @@ v6502_lib = library('v6502',
   'src/cpu/opcodes.cpp',
   'src/cpu/opcodes/loads.cpp',
   'src/cpu/opcodes/stores.cpp',
+  'src/cpu/opcodes/stack.cpp',
 
   include_directories: v6502_inc,
   install: true,
