@@ -8,7 +8,14 @@ OPCODE(stx);
 OPCODE(ldy);
 OPCODE(sty);
 
+OPCODE(nop) {
+  (void)cpu;
+  (void)mode;
+}
+
 std::map<uint8_t, Opcode> cpuOpcodes = {
+    {0xEA, {"NOP", nop}},
+
     {0xA9, {"LDA #$nn", lda, IMMEDIATE}},
     {0xAD, {"LDA $nnnn", lda, ABSOLUTE}},
     {0xBD, {"LDA $nnnn,X", lda, X_ABSOLUTE}},

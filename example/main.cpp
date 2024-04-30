@@ -3,10 +3,15 @@
 #include "vprint.h"
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 
 class SimpleRAMBus : public MemoryBus {
 public:
-  SimpleRAMBus() { ram = new uint8_t[0x10000]; }
+  SimpleRAMBus() {
+    ram = new uint8_t[0x10000];
+    // fill with NOPs
+    memset(ram, 0xEA, 0x10000);
+  }
   ~SimpleRAMBus() { delete[] ram; }
 
   uint8_t read(uint16_t addr) override { return ram[addr]; }
