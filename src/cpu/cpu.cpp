@@ -111,6 +111,8 @@ void CPU::executeStep() {
     std::terminate();
   }
   auto instruction = cpuOpcodes[opcode];
+#ifdef V6502_DEBUG
   print("\n{}\n", instruction.basicInfo);
+#endif
   instruction.function(this, instruction.mode);
 }
