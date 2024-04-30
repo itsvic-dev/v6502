@@ -45,4 +45,5 @@ public:
   uint16_t fetchWord();
 
   uint8_t fetchByteWithMode(AddressingMode mode);
+  uint16_t fetchEffectiveModeValue(AddressingMode mode);
 };

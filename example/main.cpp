@@ -21,13 +21,14 @@ lda #69
 sta $0200
 */
 const char *program = "\xA9\x45\x8D\x00\x02";
+const size_t programSize = 5;
 
 int main() {
   SimpleRAMBus bus;
   CPU cpu(&bus);
 
   // copy test program to 0x6000
-  for (size_t i = 0; i < sizeof(program); i++) {
+  for (size_t i = 0; i < programSize; i++) {
     bus.write(0x6000 + i, program[i]);
   }
 
@@ -37,8 +38,9 @@ int main() {
   print("resetting CPU\n");
   cpu.reset();
 
-  while (true) {
+  while (cpu.pc >= 0x6000 && cpu.pc < 0x6000 + programSize) {
     cpu.executeStep();
   }
+  print("value of $0200 is {}\n", bus.read(0x0200));
   return 0;
 }

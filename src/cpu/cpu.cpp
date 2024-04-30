@@ -27,12 +27,47 @@ uint8_t CPU::fetchByteWithMode(AddressingMode mode) {
     return bus->read(fetchWord() + x);
   case Y_ABSOLUTE:
     return bus->read(fetchWord() + y);
+  case ABSOLUTE_INDIRECT:
+    return bus->read(readWord(fetchWord()));
   case ZERO_PAGE:
     return bus->read(fetchByte());
   case X_ZERO_PAGE:
     return bus->read(fetchByte() + x);
   case Y_ZERO_PAGE:
     return bus->read(fetchByte() + y);
+  case X_ZP_INDIRECT:
+    return bus->read(readWord(fetchByte() + x));
+  case ZP_INDIRECT_Y:
+    return bus->read(readWord(fetchByte()) + y);
+  default:
+    throw "invalid mode passed to fetchByteWithMode";
+  }
+}
+
+uint16_t CPU::fetchEffectiveModeValue(AddressingMode mode) {
+  switch (mode) {
+  case ACCUMULATOR:
+    return a;
+  case IMMEDIATE:
+    return fetchByte();
+  case ABSOLUTE:
+    return fetchWord();
+  case X_ABSOLUTE:
+    return fetchWord() + x;
+  case Y_ABSOLUTE:
+    return fetchWord() + y;
+  case ABSOLUTE_INDIRECT:
+    return readWord(fetchWord());
+  case ZERO_PAGE:
+    return fetchByte();
+  case X_ZERO_PAGE:
+    return fetchByte() + x;
+  case Y_ZERO_PAGE:
+    return fetchByte() + y;
+  case X_ZP_INDIRECT:
+    return readWord(fetchByte() + x);
+  case ZP_INDIRECT_Y:
+    return readWord(fetchByte()) + y;
   default:
     throw "invalid mode passed to fetchByteWithMode";
   }
