@@ -28,9 +28,7 @@ v6502_dep = declare_dependency(
 )
 
 executable(
-  'v6502_basic_example',
-
-  'example/main.cpp',
-
+  'v6502_loadram',
+  'example/loadram.cpp',
   dependencies: v6502_dep,
 )

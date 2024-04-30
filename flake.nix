@@ -22,6 +22,7 @@
           nativeBuildInputs = with pkgs; [
             meson
             ninja
+            cc65
           ];
         };
       }
