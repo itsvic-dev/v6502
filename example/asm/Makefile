@@ -1,7 +1,8 @@
-all: jumps.bin
+all: jumps.bin wozmon.bin
 .PHONY: all
 
 jumps.bin: jumps.asm
+wozmon.bin: wozmon.asm
 
 %.bin: %.asm
 	ca65 $< -o $(patsubst %.asm,%.o,$<)

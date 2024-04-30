@@ -27,6 +27,15 @@ OPCODE(jsr);
 OPCODE(rti);
 OPCODE(rts);
 
+// flags
+OPCODE(clc);
+OPCODE(cld);
+OPCODE(cli);
+OPCODE(clv);
+OPCODE(sec);
+OPCODE(sed);
+OPCODE(sei);
+
 // nop
 OPCODE(nop) {
   (void)cpu;
@@ -115,6 +124,15 @@ std::map<uint8_t, Opcode> cpuOpcodes = {
     {0x20, {"JSR $nnnn", jsr, ABSOLUTE}},
     {0x40, {"RTI", rti}},
     {0x60, {"RTS", rts}},
+
+    // flags
+    {0x18, {"CLC", clc}},
+    {0xD8, {"CLD", cld}},
+    {0x58, {"CLI", cli}},
+    {0xB8, {"CLV", clv}},
+    {0x38, {"SEC", sec}},
+    {0xF8, {"SED", sed}},
+    {0x78, {"SEI", sei}},
 
     // nop
     {0xEA, {"NOP", nop}},
