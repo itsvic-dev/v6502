@@ -4,10 +4,15 @@ project(
   default_options: ['warning_level=3', 'cpp_std=c++23']
 )
 
+if get_option('debug_logs')
+  add_project_arguments('-DV6502_DEBUG', language: 'cpp')
+endif
+
 v6502_inc = include_directories('inc')
 v6502_lib = library('v6502',
 
   'src/cpu/cpu.cpp',
+  'src/cpu/opcodes.cpp',
 
   include_directories: v6502_inc,
   install: true,

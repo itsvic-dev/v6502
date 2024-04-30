@@ -1,10 +1,8 @@
 #include "cpu/cpu.h"
 #include "cpu/memory.h"
+#include "vprint.h"
+#include <cstddef>
 #include <cstdint>
-#include <format>
-#include <iostream>
-
-#define print(...) std::cout << std::format(__VA_ARGS__)
 
 class SimpleRAMBus : public MemoryBus {
 public:
@@ -18,16 +16,29 @@ private:
   uint8_t *ram;
 };
 
+/*
+lda #69
+sta $0200
+*/
+const char *program = "\xA9\x45\x8D\x00\x02";
+
 int main() {
   SimpleRAMBus bus;
   CPU cpu(&bus);
 
-  bus.write(0xFFFC, 0x12);
-  bus.write(0xFFFD, 0x34);
+  // copy test program to 0x6000
+  for (size_t i = 0; i < sizeof(program); i++) {
+    bus.write(0x6000 + i, program[i]);
+  }
+
+  bus.write(0xFFFC, 0x00);
+  bus.write(0xFFFD, 0x60);
 
   print("resetting CPU\n");
   cpu.reset();
 
-  print("PC is now {:#06x}\n", cpu.pc);
+  while (true) {
+    cpu.executeStep();
+  }
   return 0;
 }

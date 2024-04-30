@@ -1,12 +1,17 @@
 #include "cpu/cpu.h"
 #include "cpu/memory.h"
+#include "cpu/opcodes.h"
+#include "vprint.h"
 #include <cstdint>
+#include <exception>
 
 CPU::CPU(MemoryBus *bus) : bus(bus) {}
 
 uint16_t CPU::readWord(uint16_t addr) {
   return bus->read(addr) | ((uint16_t)bus->read(addr + 1) << 8);
 }
+
+uint8_t CPU::fetchByte() { return bus->read(pc++); }
 
 void CPU::setFlags(uint8_t flags) { status |= flags; }
 void CPU::clearFlags(uint8_t flags) { status ^= flags; }
@@ -19,4 +24,22 @@ void CPU::reset() {
   sp -= 3;
   setFlags(STATUS_INTERRUPT_DISABLE);
   this->pc = readWord(0xFFFC);
+}
+
+void CPU::executeStep() {
+#ifdef V6502_DEBUG
+  print("---\nPC: ${:04x}\tSP: ${:02x}\nA:  ${:02x}\t\tP:  ${:02x}\nX:  "
+        "${:02x}\t\tY:  "
+        "${:02x}\n",
+        pc, sp, a, status, x, y);
+#endif
+
+  uint8_t opcode = fetchByte();
+  if (!cpuOpcodes.contains(opcode)) {
+    print("[v6502] unknown CPU opcode encountered: {:02x}\n", opcode);
+    std::terminate();
+  }
+  auto instruction = cpuOpcodes[opcode];
+  print("-> {}\n", instruction.basicInfo);
+  instruction.function(this);
 }

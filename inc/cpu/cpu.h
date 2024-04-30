@@ -21,7 +21,7 @@ public:
   CPU(MemoryBus *bus);
 
   void reset();
-  void do_step();
+  void executeStep();
 
   uint16_t pc = 0;
   uint8_t a = 0;
@@ -35,8 +35,10 @@ public:
   void setFlags(uint8_t flags);
   void clearFlags(uint8_t flags);
 
-protected:
-  uint16_t readWord(uint16_t addr);
   void pushStack(uint8_t data);
   uint8_t popStack();
+
+protected:
+  uint16_t readWord(uint16_t addr);
+  uint8_t fetchByte();
 };
