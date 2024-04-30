@@ -1,29 +1,40 @@
 #include "cpu/opcodes.h"
 #include "cpu/modes.h"
 
+// load
 OPCODE(lda);
 OPCODE(sta);
 OPCODE(ldx);
 OPCODE(stx);
 OPCODE(ldy);
 OPCODE(sty);
+
+// stack
 OPCODE(pha);
 OPCODE(php);
 OPCODE(pla);
 OPCODE(plp);
+
+// logic
+OPCODE(_and);
+OPCODE(bit);
+OPCODE(eor);
+OPCODE(ora);
+
+// ctrl
 OPCODE(jmp);
 OPCODE(jsr);
 OPCODE(rti);
 OPCODE(rts);
 
+// nop
 OPCODE(nop) {
   (void)cpu;
   (void)mode;
 }
 
 std::map<uint8_t, Opcode> cpuOpcodes = {
-    {0xEA, {"NOP", nop}},
-
+    // load
     {0xA9, {"LDA #$nn", lda, IMMEDIATE}},
     {0xAD, {"LDA $nnnn", lda, ABSOLUTE}},
     {0xBD, {"LDA $nnnn,X", lda, X_ABSOLUTE}},
@@ -61,14 +72,50 @@ std::map<uint8_t, Opcode> cpuOpcodes = {
     {0x84, {"STY $nn", sty, ZERO_PAGE}},
     {0x94, {"STY $nn,X", sty, X_ZERO_PAGE}},
 
+    // stack
     {0x48, {"PHA", pha}},
     {0x68, {"PLA", pla}},
     {0x08, {"PHP", php}},
     {0x28, {"PLP", plp}},
 
+    // logic
+    {0x29, {"AND #$nn", _and, IMMEDIATE}},
+    {0x2D, {"AND $nnnn", _and, ABSOLUTE}},
+    {0x3D, {"AND $nnnn,X", _and, X_ABSOLUTE}},
+    {0x39, {"AND $nnnn,Y", _and, Y_ABSOLUTE}},
+    {0x25, {"AND $nn", _and, ZERO_PAGE}},
+    {0x35, {"AND $nn,X", _and, X_ZERO_PAGE}},
+    {0x21, {"AND ($nn,X)", _and, X_ZP_INDIRECT}},
+    {0x31, {"AND ($nn),Y", _and, ZP_INDIRECT_Y}},
+
+    {0x2C, {"BIT $nnnn", bit, ABSOLUTE}},
+    {0x24, {"BIT $nn", bit, ZERO_PAGE}},
+
+    {0x49, {"EOR #$nn", eor, IMMEDIATE}},
+    {0x4D, {"EOR $nnnn", eor, ABSOLUTE}},
+    {0x5D, {"EOR $nnnn,X", eor, X_ABSOLUTE}},
+    {0x59, {"EOR $nnnn,Y", eor, Y_ABSOLUTE}},
+    {0x45, {"EOR $nn", eor, ZERO_PAGE}},
+    {0x55, {"EOR $nn,X", eor, X_ZERO_PAGE}},
+    {0x41, {"EOR ($nn,X)", eor, X_ZP_INDIRECT}},
+    {0x51, {"EOR ($nn),Y", eor, ZP_INDIRECT_Y}},
+
+    {0x09, {"ORA #$nn", ora, IMMEDIATE}},
+    {0x0D, {"ORA $nnnn", ora, ABSOLUTE}},
+    {0x1D, {"ORA $nnnn,X", ora, X_ABSOLUTE}},
+    {0x19, {"ORA $nnnn,Y", ora, Y_ABSOLUTE}},
+    {0x05, {"ORA $nn", ora, ZERO_PAGE}},
+    {0x15, {"ORA $nn,X", ora, X_ZERO_PAGE}},
+    {0x01, {"ORA ($nn,X)", ora, X_ZP_INDIRECT}},
+    {0x11, {"ORA ($nn),Y", ora, ZP_INDIRECT_Y}},
+
+    // ctrl
     {0x4C, {"JMP $nnnn", jmp, ABSOLUTE}},
     {0x6C, {"JMP ($nnnn)", jmp, ABSOLUTE_INDIRECT}},
     {0x20, {"JSR $nnnn", jsr, ABSOLUTE}},
     {0x40, {"RTI", rti}},
     {0x60, {"RTS", rts}},
+
+    // nop
+    {0xEA, {"NOP", nop}},
 };

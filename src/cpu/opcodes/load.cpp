@@ -1,8 +1,6 @@
 #include "cpu/cpu.h"
 #include "cpu/opcodes.h"
 
-// defines LDA, LDX, LDY
-
 OPCODE(lda) {
   cpu->a = cpu->fetchByteWithMode(mode);
   cpu->evaluateFlags(cpu->a);
@@ -17,3 +15,7 @@ OPCODE(ldy) {
   cpu->y = cpu->fetchByteWithMode(mode);
   cpu->evaluateFlags(cpu->y);
 }
+
+OPCODE(sta) { cpu->bus->write(cpu->fetchEffectiveModeValue(mode), cpu->a); }
+OPCODE(stx) { cpu->bus->write(cpu->fetchEffectiveModeValue(mode), cpu->x); }
+OPCODE(sty) { cpu->bus->write(cpu->fetchEffectiveModeValue(mode), cpu->y); }
