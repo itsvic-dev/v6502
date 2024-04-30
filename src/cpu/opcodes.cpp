@@ -11,6 +11,10 @@ OPCODE(pha);
 OPCODE(php);
 OPCODE(pla);
 OPCODE(plp);
+OPCODE(jmp);
+OPCODE(jsr);
+OPCODE(rti);
+OPCODE(rts);
 
 OPCODE(nop) {
   (void)cpu;
@@ -61,4 +65,10 @@ std::map<uint8_t, Opcode> cpuOpcodes = {
     {0x68, {"PLA", pla}},
     {0x08, {"PHP", php}},
     {0x28, {"PLP", plp}},
+
+    {0x4C, {"JMP $nnnn", jmp, ABSOLUTE}},
+    {0x6C, {"JMP ($nnnn)", jmp, ABSOLUTE_INDIRECT}},
+    {0x20, {"JSR $nnnn", jsr, ABSOLUTE}},
+    {0x40, {"RTI", rti}},
+    {0x60, {"RTS", rts}},
 };

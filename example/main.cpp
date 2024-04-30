@@ -28,14 +28,20 @@ private:
 };
 
 /*
-lda #69
-pha
-lda #0
-pla
-nop
+.org $6000
+
+jmp main
+
+loadfun:
+  lda #69
+  rts
+
+main:
+  jsr loadfun
+  nop
 */
-const char *program = "\xA9\x45\x48\xA9\x00\x68\xEA";
-const size_t programSize = 7;
+const char *program = "\x4C\x06\x60\xA9\x45\x60\x20\x03\x60\xEA";
+const size_t programSize = 10;
 
 int main() {
   SimpleRAMBus bus;
