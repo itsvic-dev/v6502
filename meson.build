@@ -13,6 +13,7 @@ v6502_lib = library('v6502',
 
   'src/cpu/cpu.cpp',
   'src/cpu/opcodes.cpp',
+  'src/cpu/opcodes/loads.cpp',
 
   include_directories: v6502_inc,
   install: true,

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cpu/memory.h"
+#include "cpu/modes.h"
 #include <cstdint>
 
 #define STATUS_CARRY (1 << 0)
@@ -34,11 +35,14 @@ public:
 
   void setFlags(uint8_t flags);
   void clearFlags(uint8_t flags);
+  void evaluateFlags(uint8_t value);
 
   void pushStack(uint8_t data);
   uint8_t popStack();
 
-protected:
   uint16_t readWord(uint16_t addr);
   uint8_t fetchByte();
+  uint16_t fetchWord();
+
+  uint8_t fetchByteWithMode(AddressingMode mode);
 };

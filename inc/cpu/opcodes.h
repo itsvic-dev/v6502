@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cpu/cpu.h"
+#include "cpu/modes.h"
 #include <cstdint>
 #include <functional>
 #include <map>
@@ -8,7 +9,11 @@
 
 struct Opcode {
   const std::string basicInfo;
-  const std::function<void(CPU *)> function;
+  const std::function<void(CPU *, AddressingMode)> function;
+  // Instructions often have a common core but with different addressing modes.
+  const AddressingMode mode = IMPLIED;
 };
+
+#define OPCODE(name) void name(CPU *cpu, AddressingMode mode)
 
 extern std::map<uint8_t, Opcode> cpuOpcodes;

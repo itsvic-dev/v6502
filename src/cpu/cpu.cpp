@@ -12,9 +12,38 @@ uint16_t CPU::readWord(uint16_t addr) {
 }
 
 uint8_t CPU::fetchByte() { return bus->read(pc++); }
+uint16_t CPU::fetchWord() { return fetchByte() | ((uint16_t)fetchByte() << 8); }
+
+uint8_t CPU::fetchByteWithMode(AddressingMode mode) {
+  switch (mode) {
+  case ACCUMULATOR:
+    return a;
+  case IMMEDIATE:
+    return fetchByte();
+  case ABSOLUTE:
+    return bus->read(fetchWord());
+  case X_ABSOLUTE:
+    return bus->read(fetchWord() + x);
+  case Y_ABSOLUTE:
+    return bus->read(fetchWord() + y);
+  default:
+    throw "invalid mode passed to fetchByteWithMode";
+  }
+}
 
 void CPU::setFlags(uint8_t flags) { status |= flags; }
-void CPU::clearFlags(uint8_t flags) { status ^= flags; }
+void CPU::clearFlags(uint8_t flags) { status &= ~flags; }
+
+void CPU::evaluateFlags(uint8_t value) {
+  clearFlags(STATUS_ZERO | STATUS_NEGATIVE);
+
+  if (value == 0)
+    setFlags(STATUS_ZERO);
+
+  if ((value & 0x80) != 0) {
+    setFlags(STATUS_NEGATIVE);
+  }
+}
 
 void CPU::pushStack(uint8_t data) { bus->write(0x100 + sp--, data); }
 uint8_t CPU::popStack() { return bus->read(0x100 + sp++); }
@@ -40,6 +69,6 @@ void CPU::executeStep() {
     std::terminate();
   }
   auto instruction = cpuOpcodes[opcode];
-  print("-> {}\n", instruction.basicInfo);
-  instruction.function(this);
+  print("\n{}\n", instruction.basicInfo);
+  instruction.function(this, instruction.mode);
 }
