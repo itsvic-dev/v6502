@@ -1,5 +1,6 @@
 #include "cpu/cpu.h"
 #include "cpu/memory.h"
+#include "cpu/modes.h"
 #include "cpu/opcodes.h"
 #include "vprint.h"
 #include <cstdint>
@@ -26,6 +27,12 @@ uint8_t CPU::fetchByteWithMode(AddressingMode mode) {
     return bus->read(fetchWord() + x);
   case Y_ABSOLUTE:
     return bus->read(fetchWord() + y);
+  case ZERO_PAGE:
+    return bus->read(fetchByte());
+  case X_ZERO_PAGE:
+    return bus->read(fetchByte() + x);
+  case Y_ZERO_PAGE:
+    return bus->read(fetchByte() + y);
   default:
     throw "invalid mode passed to fetchByteWithMode";
   }
