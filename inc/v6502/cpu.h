@@ -15,7 +15,7 @@
 
 // UNUSED is hard-wired to be set
 #define FLAG_IS_SET(status, flag)                                              \
-  (flag == STATUS_UNUSED ? 1 : (status) & flag == flag)
+  (flag == STATUS_UNUSED ? 1 : (status & flag) == flag)
 
 class CPU {
 public:

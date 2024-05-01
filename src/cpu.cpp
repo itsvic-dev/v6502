@@ -68,6 +68,11 @@ uint16_t CPU::fetchEffectiveModeValue(AddressingMode mode) {
     return readWord(fetchByte() + x);
   case ZP_INDIRECT_Y:
     return readWord(fetchByte()) + y;
+  case RELATIVE: {
+    int8_t offset = fetchByte();
+    // PC now points at the next instruction, apply the offset to PC
+    return pc + offset;
+  }
   default:
     throw "invalid mode passed to fetchByteWithMode";
   }

@@ -32,6 +32,16 @@ OPCODE(jsr);
 OPCODE(rti);
 OPCODE(rts);
 
+// branch
+OPCODE(bcc);
+OPCODE(bcs);
+OPCODE(beq);
+OPCODE(bmi);
+OPCODE(bne);
+OPCODE(bpl);
+OPCODE(bvc);
+OPCODE(bvs);
+
 // flags
 OPCODE(clc);
 OPCODE(cld);
@@ -147,6 +157,16 @@ std::map<uint8_t, Opcode> cpuOpcodes = {
     {0x20, {"JSR $nnnn", jsr, ABSOLUTE}},
     {0x40, {"RTI", rti}},
     {0x60, {"RTS", rts}},
+
+    // branch
+    {0x90, {"BCC $nnnn", bcc, RELATIVE}},
+    {0xB0, {"BCS $nnnn", bcs, RELATIVE}},
+    {0xF0, {"BEQ $nnnn", beq, RELATIVE}},
+    {0x30, {"BMI $nnnn", bmi, RELATIVE}},
+    {0xD0, {"BNE $nnnn", bne, RELATIVE}},
+    {0x10, {"BPL $nnnn", bpl, RELATIVE}},
+    {0x50, {"BVC $nnnn", bvc, RELATIVE}},
+    {0x70, {"BVS $nnnn", bvs, RELATIVE}},
 
     // flags
     {0x18, {"CLC", clc}},
