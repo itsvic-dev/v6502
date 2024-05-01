@@ -26,6 +26,14 @@ OPCODE(cmp);
 OPCODE(cpx);
 OPCODE(cpy);
 
+// inc
+OPCODE(dec);
+OPCODE(dex);
+OPCODE(dey);
+OPCODE(inc);
+OPCODE(inx);
+OPCODE(iny);
+
 // ctrl
 OPCODE(jmp);
 OPCODE(jsr);
@@ -150,6 +158,21 @@ std::map<uint8_t, Opcode> cpuOpcodes = {
     {0xC0, {"CPY #$nn", cpy, IMMEDIATE}},
     {0xCC, {"CPY $nnnn", cpy, ABSOLUTE}},
     {0xC4, {"CPY $nn", cpy, ZERO_PAGE}},
+
+    // inc
+    {0xCE, {"DEC $nnnn", dec, ABSOLUTE}},
+    {0xDE, {"DEC $nnnn,X", dec, X_ABSOLUTE}},
+    {0xC6, {"DEC $nn", dec, ZERO_PAGE}},
+    {0xD6, {"DEC $nn,X", dec, X_ZERO_PAGE}},
+    {0xCA, {"DEX", dex}},
+    {0x88, {"DEY", dey}},
+
+    {0xEE, {"INC $nnnn", inc, ABSOLUTE}},
+    {0xFE, {"INC $nnnn,X", inc, X_ABSOLUTE}},
+    {0xE6, {"INC $nn", inc, ZERO_PAGE}},
+    {0xF6, {"INC $nn,X", inc, X_ZERO_PAGE}},
+    {0xE8, {"INX", inx}},
+    {0xC8, {"INY", iny}},
 
     // ctrl
     {0x4C, {"JMP $nnnn", jmp, ABSOLUTE}},
