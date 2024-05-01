@@ -13,7 +13,7 @@ L               = $28           ;  Hex value parsing Low
 H               = $29           ;  Hex value parsing High
 YSAV            = $2A           ;  Used to see if hex value is given
 MODE            = $2B           ;  $00=XAM, $7F=STOR, $AE=BLOCK XAM
-
+CR              = $8A           ;  usually $8D. but remapped to $8A because linux
 
 ; Other Variables
 
@@ -36,7 +36,7 @@ NOTCR:          CMP #'_'+$80    ; "_"?
                 BPL NEXTCHAR    ; Auto ESC if > 127.
 ESCAPE:         LDA #'\'+$80    ; "\".
                 JSR ECHO        ; Output it.
-GETLINE:        LDA #$8D        ; CR.
+GETLINE:        LDA #CR         ; CR.
                 JSR ECHO        ; Output it.
                 LDY #$01        ; Initialize text index.
 BACKSPACE:      DEY             ; Back up text index.
@@ -46,7 +46,7 @@ NEXTCHAR:       LDA KBDRDY      ; Key ready?
                 LDA GETCHAR     ; Load character. B7 should be ‘1’.
                 STA IN,Y        ; Add to text buffer.
                 JSR ECHO        ; Display character.
-                CMP #$8D        ; CR?
+                CMP #CR         ; CR?
                 BNE NOTCR       ; No.
                 LDY #$FF        ; Reset text index.
                 LDA #$00        ; For XAM mode.
@@ -55,7 +55,7 @@ SETSTOR:        ASL             ; Leaves $7B if setting STOR mode.
 SETMODE:        STA MODE        ; $00=XAM, $7B=STOR, $AE=BLOCK XAM.
 BLSKIP:         INY             ; Advance text index.
 NEXTITEM:       LDA IN,Y        ; Get character.
-                CMP #$8D        ; CR?
+                CMP #CR         ; CR?
                 BEQ GETLINE     ; Yes, done this line.
                 CMP #'.'+$80    ; "."?
                 BCC BLSKIP      ; Skip delimiter.
@@ -143,7 +143,6 @@ PRHEX:          AND #$0F        ; Mask LSD for hex print.
                 ADC #$06        ; Add offset for letter.
 
 ECHO:
-                EOR #$80        ; Strip bit 7 to get just ASCII.
                 STA PUTCHAR     ; Output character.
                 RTS             ; Return.
 

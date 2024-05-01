@@ -8,6 +8,30 @@
 #include <fstream>
 #include <iostream>
 #include <ostream>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <termios.h>
+#include <unistd.h>
+
+// stolen from the web https://www.flipcode.com/archives/_kbhit_for_Linux.shtml
+int _kbhit() {
+  static const int STDIN = 0;
+  static bool initialized = false;
+
+  if (!initialized) {
+    // Use termios to turn off line buffering
+    termios term;
+    tcgetattr(STDIN, &term);
+    term.c_lflag &= ~ICANON;
+    tcsetattr(STDIN, TCSANOW, &term);
+    setbuf(stdin, NULL);
+    initialized = true;
+  }
+
+  int bytesWaiting;
+  ioctl(STDIN, FIONREAD, &bytesWaiting);
+  return bytesWaiting;
+}
 
 class SimpleRAMBus : public MemoryBus {
 public:
@@ -19,19 +43,22 @@ public:
   ~SimpleRAMBus() { delete[] ram; }
 
   uint8_t read(uint16_t addr) override {
-    // print("BUS R ${:04x} = ${:02x}\n", addr, ram[addr]);
+    uint8_t retVal = ram[addr];
     if (addr == 0x0201) {
-      return 0; // TODO: getchar
+      auto res = std::cin.get();
+      retVal = res == EOF ? 0 : res | 0x80;
+      // print("BUS R ${:04x} = ${:02x}\n", addr, retVal);
     }
     if (addr == 0x0202) {
-      return 0; // TODO: getchar
+      retVal = -_kbhit();
+      // print("BUS R ${:04x} = ${:02x}\n", addr, retVal);
     }
-    return ram[addr];
+    return retVal;
   }
   void write(uint16_t addr, uint8_t data) override {
     // print("BUS W ${:04x} = ${:02x}\n", addr, data);
     if (addr == 0x0200) {
-      std::cout << (char)data << std::flush;
+      std::cout << (char)(data & ~0x80) << std::flush;
       return;
     }
     ram[addr] = data;
@@ -48,6 +75,13 @@ int main(int argc, char **argv) {
           argv[0]);
     return -1;
   }
+
+  // disable input echoing
+  termios oldt;
+  tcgetattr(STDIN_FILENO, &oldt);
+  termios newt = oldt;
+  newt.c_lflag &= ~ECHO;
+  tcsetattr(STDIN_FILENO, TCSANOW, &newt);
 
   SimpleRAMBus bus;
   CPU cpu(&bus);

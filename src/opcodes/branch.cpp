@@ -3,7 +3,7 @@
 
 OPCODE(bcc) {
   uint16_t addr = cpu->fetchEffectiveModeValue(mode);
-  if (!FLAG_IS_SET(cpu->status, STATUS_CARRY))
+  if (FLAG_IS_CLEAR(cpu->status, STATUS_CARRY))
     cpu->pc = addr;
 }
 
@@ -27,13 +27,13 @@ OPCODE(bmi) {
 
 OPCODE(bne) {
   uint16_t addr = cpu->fetchEffectiveModeValue(mode);
-  if (!FLAG_IS_SET(cpu->status, STATUS_ZERO))
+  if (FLAG_IS_CLEAR(cpu->status, STATUS_ZERO))
     cpu->pc = addr;
 }
 
 OPCODE(bpl) {
   uint16_t addr = cpu->fetchEffectiveModeValue(mode);
-  if (!FLAG_IS_SET(cpu->status, STATUS_NEGATIVE))
+  if (FLAG_IS_CLEAR(cpu->status, STATUS_NEGATIVE))
     cpu->pc = addr;
 }
 
