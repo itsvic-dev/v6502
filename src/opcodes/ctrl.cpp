@@ -1,4 +1,4 @@
-#include "cpu/opcodes.h"
+#include "v6502/opcodes.h"
 #include <cstdint>
 
 OPCODE(jmp) { cpu->pc = cpu->fetchEffectiveModeValue(mode); }

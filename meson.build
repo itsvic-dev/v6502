@@ -11,13 +11,14 @@ endif
 v6502_inc = include_directories('inc')
 v6502_lib = library('v6502',
 
-  'src/cpu/cpu.cpp',
-  'src/cpu/opcodes.cpp',
-  'src/cpu/opcodes/ctrl.cpp',
-  'src/cpu/opcodes/flags.cpp',
-  'src/cpu/opcodes/load.cpp',
-  'src/cpu/opcodes/logic.cpp',
-  'src/cpu/opcodes/stack.cpp',
+  'src/cpu.cpp',
+  'src/opcodes.cpp',
+  'src/opcodes/arith.cpp',
+  'src/opcodes/ctrl.cpp',
+  'src/opcodes/flags.cpp',
+  'src/opcodes/load.cpp',
+  'src/opcodes/logic.cpp',
+  'src/opcodes/stack.cpp',
 
   include_directories: v6502_inc,
   install: true,

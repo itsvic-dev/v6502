@@ -1,8 +1,8 @@
 // Loads a program into RAM at $6000 and begins execution there.
 
-#include "cpu/cpu.h"
-#include "cpu/memory.h"
-#include "vprint.h"
+#include "v6502/cpu.h"
+#include "v6502/memory.h"
+#include "v6502/print.h"
 #include <cstdint>
 #include <cstring>
 #include <fstream>

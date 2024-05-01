@@ -1,5 +1,5 @@
-#include "cpu/opcodes.h"
-#include "cpu/modes.h"
+#include "v6502/opcodes.h"
+#include "v6502/modes.h"
 
 // load
 OPCODE(lda);

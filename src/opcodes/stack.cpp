@@ -1,5 +1,5 @@
-#include "cpu/cpu.h"
-#include "cpu/opcodes.h"
+#include "v6502/cpu.h"
+#include "v6502/opcodes.h"
 
 OPCODE(pha) {
   (void)mode;

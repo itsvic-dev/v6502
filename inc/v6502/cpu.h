@@ -1,7 +1,7 @@
 #pragma once
 
-#include "cpu/memory.h"
-#include "cpu/modes.h"
+#include "v6502/memory.h"
+#include "v6502/modes.h"
 #include <cstdint>
 
 #define STATUS_CARRY (1 << 0)

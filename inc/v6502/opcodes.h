@@ -1,7 +1,7 @@
 #pragma once
 
-#include "cpu/cpu.h"
-#include "cpu/modes.h"
+#include "v6502/cpu.h"
+#include "v6502/modes.h"
 #include <cstdint>
 #include <functional>
 #include <map>

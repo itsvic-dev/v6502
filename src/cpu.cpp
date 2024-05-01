@@ -1,8 +1,8 @@
-#include "cpu/cpu.h"
-#include "cpu/memory.h"
-#include "cpu/modes.h"
-#include "cpu/opcodes.h"
-#include "vprint.h"
+#include "v6502/cpu.h"
+#include "v6502/memory.h"
+#include "v6502/modes.h"
+#include "v6502/opcodes.h"
+#include "v6502/print.h"
 #include <cstdint>
 #include <exception>
 
