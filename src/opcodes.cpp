@@ -9,6 +9,14 @@ OPCODE(stx);
 OPCODE(ldy);
 OPCODE(sty);
 
+// trans
+OPCODE(tax);
+OPCODE(tay);
+OPCODE(tsx);
+OPCODE(txa);
+OPCODE(txs);
+OPCODE(tya);
+
 // stack
 OPCODE(pha);
 OPCODE(php);
@@ -103,6 +111,14 @@ std::map<uint8_t, Opcode> cpuOpcodes = {
     {0x8C, {"STY $nnnn", sty, ABSOLUTE}},
     {0x84, {"STY $nn", sty, ZERO_PAGE}},
     {0x94, {"STY $nn,X", sty, X_ZERO_PAGE}},
+
+    // trans
+    {0xAA, {"TAX", tax}},
+    {0xA8, {"TAY", tay}},
+    {0xBA, {"TSX", tsx}},
+    {0x8A, {"TXA", txa}},
+    {0x9A, {"TXS", txs}},
+    {0x98, {"TYA", tya}},
 
     // stack
     {0x48, {"PHA", pha}},

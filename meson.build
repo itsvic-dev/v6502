@@ -21,6 +21,7 @@ v6502_lib = library('v6502',
   'src/opcodes/load.cpp',
   'src/opcodes/logic.cpp',
   'src/opcodes/stack.cpp',
+  'src/opcodes/trans.cpp',
 
   include_directories: v6502_inc,
   install: true,
