@@ -21,6 +21,11 @@ OPCODE(bit);
 OPCODE(eor);
 OPCODE(ora);
 
+// arith
+OPCODE(cmp);
+OPCODE(cpx);
+OPCODE(cpy);
+
 // ctrl
 OPCODE(jmp);
 OPCODE(jsr);
@@ -117,6 +122,24 @@ std::map<uint8_t, Opcode> cpuOpcodes = {
     {0x15, {"ORA $nn,X", ora, X_ZERO_PAGE}},
     {0x01, {"ORA ($nn,X)", ora, X_ZP_INDIRECT}},
     {0x11, {"ORA ($nn),Y", ora, ZP_INDIRECT_Y}},
+
+    // arith
+    {0xC9, {"CMP #$nn", cmp, IMMEDIATE}},
+    {0xCD, {"CMP $nnnn", cmp, ABSOLUTE}},
+    {0xDD, {"CMP $nnnn,X", cmp, X_ABSOLUTE}},
+    {0xD9, {"CMP $nnnn,Y", cmp, Y_ABSOLUTE}},
+    {0xC5, {"CMP $nn", cmp, ZERO_PAGE}},
+    {0xD5, {"CMP $nn,X", cmp, X_ZERO_PAGE}},
+    {0xC1, {"CMP ($nn,X)", cmp, X_ZP_INDIRECT}},
+    {0xD1, {"CMP ($nn),Y", cmp, ZP_INDIRECT_Y}},
+
+    {0xE0, {"CPX #$nn", cpx, IMMEDIATE}},
+    {0xEC, {"CPX $nnnn", cpx, ABSOLUTE}},
+    {0xE4, {"CPX $nn", cpx, ZERO_PAGE}},
+
+    {0xC0, {"CPY #$nn", cpy, IMMEDIATE}},
+    {0xCC, {"CPY $nnnn", cpy, ABSOLUTE}},
+    {0xC4, {"CPY $nn", cpy, ZERO_PAGE}},
 
     // ctrl
     {0x4C, {"JMP $nnnn", jmp, ABSOLUTE}},
