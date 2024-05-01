@@ -17,22 +17,17 @@ MODE            = $2B           ;  $00=XAM, $7F=STOR, $AE=BLOCK XAM
 
 ; Other Variables
 
-IN              = $0200         ;  Input buffer to $027F
-KBD             = $D010         ;  PIA.A keyboard input
-KBDCR           = $D011         ;  PIA.A keyboard control register
-DSP             = $D012         ;  PIA.B display output register
-DSPCR           = $D013         ;  PIA.B display control register
+IN              = $0300         ;  Input buffer to $027F
+PUTCHAR         = $0200
+GETCHAR         = $0201
+KBDRDY          = $0202
 
                .segment "CODE"
                .export RESET
 
 RESET:          CLD             ; Clear decimal arithmetic mode.
                 CLI
-                LDY #$7F        ; Mask for DSP data direction register.
-                STY DSP         ; Set it up.
-                LDA #$A7        ; KBD and DSP control register mask.
-                STA KBDCR       ; Enable interrupts, set CA1, CB1, for
-                STA DSPCR       ;  positive edge sense/output mode.
+                JMP ESCAPE
 NOTCR:          CMP #'_'+$80    ; "_"?
                 BEQ BACKSPACE   ; Yes.
                 CMP #$9B        ; ESC?
@@ -46,9 +41,9 @@ GETLINE:        LDA #$8D        ; CR.
                 LDY #$01        ; Initialize text index.
 BACKSPACE:      DEY             ; Back up text index.
                 BMI GETLINE     ; Beyond start of line, reinitialize.
-NEXTCHAR:       LDA KBDCR       ; Key ready?
+NEXTCHAR:       LDA KBDRDY      ; Key ready?
                 BPL NEXTCHAR    ; Loop until ready.
-                LDA KBD         ; Load character. B7 should be ‘1’.
+                LDA GETCHAR     ; Load character. B7 should be ‘1’.
                 STA IN,Y        ; Add to text buffer.
                 JSR ECHO        ; Display character.
                 CMP #$8D        ; CR?
@@ -146,9 +141,10 @@ PRHEX:          AND #$0F        ; Mask LSD for hex print.
                 CMP #$BA        ; Digit?
                 BCC ECHO        ; Yes, output it.
                 ADC #$06        ; Add offset for letter.
-ECHO:           BIT DSP         ; DA bit (B7) cleared yet?
-                BMI ECHO        ; No, wait for display.
-                STA DSP         ; Output character. Sets DA.
+
+ECHO:
+                EOR #$80        ; Strip bit 7 to get just ASCII.
+                STA PUTCHAR     ; Output character.
                 RTS             ; Return.
 
                 BRK             ; unused

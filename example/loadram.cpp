@@ -6,6 +6,8 @@
 #include <cstdint>
 #include <cstring>
 #include <fstream>
+#include <iostream>
+#include <ostream>
 
 class SimpleRAMBus : public MemoryBus {
 public:
@@ -17,11 +19,21 @@ public:
   ~SimpleRAMBus() { delete[] ram; }
 
   uint8_t read(uint16_t addr) override {
-    print("BUS R ${:04x} = ${:02x}\n", addr, ram[addr]);
+    // print("BUS R ${:04x} = ${:02x}\n", addr, ram[addr]);
+    if (addr == 0x0201) {
+      return 0; // TODO: getchar
+    }
+    if (addr == 0x0202) {
+      return 0; // TODO: getchar
+    }
     return ram[addr];
   }
   void write(uint16_t addr, uint8_t data) override {
-    print("BUS W ${:04x} = ${:02x}\n", addr, data);
+    // print("BUS W ${:04x} = ${:02x}\n", addr, data);
+    if (addr == 0x0200) {
+      std::cout << (char)data << std::flush;
+      return;
+    }
     ram[addr] = data;
   }
 
