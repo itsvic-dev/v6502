@@ -36,9 +36,11 @@ OPCODE(eor);
 OPCODE(ora);
 
 // arith
+OPCODE(adc);
 OPCODE(cmp);
 OPCODE(cpx);
 OPCODE(cpy);
+OPCODE(sbc);
 
 // inc
 OPCODE(dec);
@@ -189,6 +191,15 @@ std::map<uint8_t, Opcode> cpuOpcodes = {
     {0x11, {"ORA ($nn),Y", ora, ZP_INDIRECT_Y}},
 
     // arith
+    {0x69, {"ADC #$nn", adc, IMMEDIATE}},
+    {0x6D, {"ADC $nnnn", adc, ABSOLUTE}},
+    {0x7D, {"ADC $nnnn,X", adc, X_ABSOLUTE}},
+    {0x79, {"ADC $nnnn,Y", adc, Y_ABSOLUTE}},
+    {0x65, {"ADC $nn", adc, ZERO_PAGE}},
+    {0x75, {"ADC $nn,X", adc, X_ZERO_PAGE}},
+    {0x61, {"ADC ($nn,X)", adc, X_ZP_INDIRECT}},
+    {0x71, {"ADC ($nn),Y", adc, ZP_INDIRECT_Y}},
+
     {0xC9, {"CMP #$nn", cmp, IMMEDIATE}},
     {0xCD, {"CMP $nnnn", cmp, ABSOLUTE}},
     {0xDD, {"CMP $nnnn,X", cmp, X_ABSOLUTE}},
@@ -205,6 +216,15 @@ std::map<uint8_t, Opcode> cpuOpcodes = {
     {0xC0, {"CPY #$nn", cpy, IMMEDIATE}},
     {0xCC, {"CPY $nnnn", cpy, ABSOLUTE}},
     {0xC4, {"CPY $nn", cpy, ZERO_PAGE}},
+
+    {0xE9, {"SBC #$nn", sbc, IMMEDIATE}},
+    {0xED, {"SBC $nnnn", sbc, ABSOLUTE}},
+    {0xFD, {"SBC $nnnn,X", sbc, X_ABSOLUTE}},
+    {0xF9, {"SBC $nnnn,Y", sbc, Y_ABSOLUTE}},
+    {0xE5, {"SBC $nn", sbc, ZERO_PAGE}},
+    {0xF5, {"SBC $nn,X", sbc, X_ZERO_PAGE}},
+    {0xE1, {"SBC ($nn,X)", sbc, X_ZP_INDIRECT}},
+    {0xF1, {"SBC ($nn),Y", sbc, ZP_INDIRECT_Y}},
 
     // inc
     {0xCE, {"DEC $nnnn", dec, ABSOLUTE}},
