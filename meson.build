@@ -51,10 +51,3 @@ executable(
   'example/loadram.cpp',
   dependencies: v6502_dep,
 )
-
-executable(
-  'v6502_wozmontest',
-  'example/wozmontest.cpp',
-  dependencies: v6502_dep,
-)
-
