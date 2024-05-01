@@ -25,6 +25,9 @@ OPCODE(plp);
 
 // shift
 OPCODE(asl);
+OPCODE(lsr);
+OPCODE(rol);
+OPCODE(ror);
 
 // logic
 OPCODE(_and);
@@ -135,6 +138,24 @@ std::map<uint8_t, Opcode> cpuOpcodes = {
     {0x1E, {"ASL $nnnn,X", asl, X_ABSOLUTE}},
     {0x06, {"ASL $nn", asl, ZERO_PAGE}},
     {0x16, {"ASL $nn,X", asl, X_ZERO_PAGE}},
+
+    {0x4A, {"LSR A", lsr, ACCUMULATOR}},
+    {0x4E, {"LSR $nnnn", lsr, ABSOLUTE}},
+    {0x5E, {"LSR $nnnn,X", lsr, X_ABSOLUTE}},
+    {0x46, {"LSR $nn", lsr, ZERO_PAGE}},
+    {0x56, {"LSR $nn,X", lsr, X_ZERO_PAGE}},
+
+    {0x2A, {"ROL A", rol, ACCUMULATOR}},
+    {0x2E, {"ROL $nnnn", rol, ABSOLUTE}},
+    {0x3E, {"ROL $nnnn,X", rol, X_ABSOLUTE}},
+    {0x26, {"ROL $nn", rol, ZERO_PAGE}},
+    {0x36, {"ROL $nn,X", rol, X_ZERO_PAGE}},
+
+    {0x6A, {"ROR A", ror, ACCUMULATOR}},
+    {0x6E, {"ROR $nnnn", ror, ABSOLUTE}},
+    {0x7E, {"ROR $nnnn,X", ror, X_ABSOLUTE}},
+    {0x66, {"ROR $nn", ror, ZERO_PAGE}},
+    {0x76, {"ROR $nn,X", ror, X_ZERO_PAGE}},
 
     // logic
     {0x29, {"AND #$nn", _and, IMMEDIATE}},
