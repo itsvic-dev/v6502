@@ -111,7 +111,8 @@ void CPU::executeStep() {
   auto instruction = cpuOpcodes[opcode];
   instruction.function(this, instruction.mode);
 #ifdef V6502_DEBUG
-  print("{: <10}  A:{:02x}  X:{:02x}  Y:{:02x}  P:{:02x}  SP:{:02x}\n",
-        instruction.basicInfo, a, x, y, status, sp);
+  print(
+      "{: <16}  A:{:02x}  X:{:02x}  Y:{:02x}  P:{:02x}  SP:{:02x}  PC:{:04x}\n",
+      instruction.basicInfo, a, x, y, status, sp, pc);
 #endif
 }

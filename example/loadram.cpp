@@ -35,30 +35,27 @@ int _kbhit() {
 
 class SimpleRAMBus : public MemoryBus {
 public:
-  SimpleRAMBus() {
-    ram = new uint8_t[0x10000];
-    // fill with NOPs
-    memset(ram, 0xEA, 0x10000);
-  }
+  SimpleRAMBus() { ram = new uint8_t[0x10000]; }
   ~SimpleRAMBus() { delete[] ram; }
 
   uint8_t read(uint16_t addr) override {
     uint8_t retVal = ram[addr];
     if (addr == 0x0201) {
-      auto res = std::cin.get();
-      retVal = res == EOF ? 0 : res | 0x80;
-      // print("BUS R ${:04x} = ${:02x}\n", addr, retVal);
+      retVal = std::cin.get();
+      if (retVal == '\n')
+        retVal = '\r';
     }
     if (addr == 0x0202) {
-      retVal = -_kbhit();
-      // print("BUS R ${:04x} = ${:02x}\n", addr, retVal);
+      retVal = _kbhit() ? 1 : 0;
     }
     return retVal;
   }
+
   void write(uint16_t addr, uint8_t data) override {
-    // print("BUS W ${:04x} = ${:02x}\n", addr, data);
     if (addr == 0x0200) {
-      std::cout << (char)(data & ~0x80) << std::flush;
+      if (data == '\r')
+        data = '\n';
+      std::cout << (char)(data) << std::flush;
       return;
     }
     ram[addr] = data;
