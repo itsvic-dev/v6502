@@ -1,10 +1,7 @@
-all: jumps.bin wozmon.bin
+all: jumps.bin wozmon.bin printstring.bin
 .PHONY: all
 
-jumps.bin: jumps.asm
-wozmon.bin: wozmon.asm
-
-%.bin: %.asm
+%.bin: %.asm loadram.cfg
 	ca65 $< -o $(patsubst %.asm,%.o,$<)
 	ld65 -C loadram.cfg $(patsubst %.asm,%.o,$<) -o $@
 

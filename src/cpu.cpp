@@ -103,21 +103,15 @@ void CPU::reset() {
 }
 
 void CPU::executeStep() {
-#ifdef V6502_DEBUG
-  print("---\nPC: ${:04x}\tSP: ${:02x}\nA:  ${:02x}\t\tP:  ${:02x}\nX:  "
-        "${:02x}\t\tY:  "
-        "${:02x}\n",
-        pc, sp, a, status, x, y);
-#endif
-
   uint8_t opcode = fetchByte();
   if (!cpuOpcodes.contains(opcode)) {
     print("[v6502] unknown CPU opcode encountered: {:02x}\n", opcode);
     std::terminate();
   }
   auto instruction = cpuOpcodes[opcode];
-#ifdef V6502_DEBUG
-  print("\n{}\n", instruction.basicInfo);
-#endif
   instruction.function(this, instruction.mode);
+#ifdef V6502_DEBUG
+  print("{: <10}  A:{:02x}  X:{:02x}  Y:{:02x}  P:{:02x}  SP:{:02x}\n",
+        instruction.basicInfo, a, x, y, status, sp);
+#endif
 }
