@@ -23,6 +23,9 @@ OPCODE(php);
 OPCODE(pla);
 OPCODE(plp);
 
+// shift
+OPCODE(asl);
+
 // logic
 OPCODE(_and);
 OPCODE(bit);
@@ -125,6 +128,13 @@ std::map<uint8_t, Opcode> cpuOpcodes = {
     {0x68, {"PLA", pla}},
     {0x08, {"PHP", php}},
     {0x28, {"PLP", plp}},
+
+    // shift
+    {0x0A, {"ASL A", asl, ACCUMULATOR}},
+    {0x0E, {"ASL $nnnn", asl, ABSOLUTE}},
+    {0x1E, {"ASL $nnnn,X", asl, X_ABSOLUTE}},
+    {0x06, {"ASL $nn", asl, ZERO_PAGE}},
+    {0x16, {"ASL $nn,X", asl, X_ZERO_PAGE}},
 
     // logic
     {0x29, {"AND #$nn", _and, IMMEDIATE}},
