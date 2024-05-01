@@ -33,6 +33,19 @@ v6502_dep = declare_dependency(
   include_directories: v6502_inc,
 )
 
+gtest_dep = dependency('gtest', fallback : ['gtest'])
+
+gtest_main = executable(
+  'v6502_gtest',
+
+  'tests/gtest_main.cpp',
+  'tests/cpuFixture.cpp',
+  'tests/bugs/cmp.cpp',
+
+  dependencies: [v6502_dep, gtest_dep],
+)
+test('gtest', gtest_main)
+
 executable(
   'v6502_loadram',
   'example/loadram.cpp',

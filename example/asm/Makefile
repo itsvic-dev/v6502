@@ -1,4 +1,4 @@
-all: jumps.bin wozmon.bin printstring.bin
+all: jumps.bin wozmon.bin printstring.bin fun.bin
 .PHONY: all
 
 %.bin: %.asm loadram.cfg
