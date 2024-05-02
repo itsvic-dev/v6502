@@ -11,7 +11,6 @@ OPCODE(adc) {
 
   cpu->clearFlags(STATUS_CARRY | STATUS_OVERFLOW);
   if ((result & 0x80) == 0x80 && (cpu->a & 0x80) != 0x80) {
-    // bit 7 changed, overflow
     cpu->setFlags(STATUS_OVERFLOW);
   }
   if (result > 0xff) {
@@ -63,7 +62,7 @@ OPCODE(sbc) {
   if (result >= 0) {
     cpu->setFlags(STATUS_CARRY);
   }
-  if (result > 0xFF) {
+  if ((result & 0x80) != 0x80 && (cpu->a & 0x80) == 0x80) {
     cpu->setFlags(STATUS_OVERFLOW);
   }
 
