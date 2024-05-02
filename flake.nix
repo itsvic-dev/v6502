@@ -23,8 +23,7 @@
             meson
             ninja
             cc65
-            pkg-config
-            gtest.dev
+            lcov
           ];
         };
       }
