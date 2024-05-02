@@ -21,6 +21,9 @@ tests = {
     'instructions(arith) - SBC #$01 with A=$02': 'instructions/arith/sbc-1-02.cpp',
     'instructions(arith) - SBC #$01 with A=$80': 'instructions/arith/sbc-1-80.cpp',
 
+    'instructions(shift) - ASL A with A=$80': 'instructions/shift/asl-a-80.cpp',
+    'instructions(shift) - ROL A with set carry': 'instructions/shift/rol-sec.cpp',
+
     # old bugs
     'old bugs - does CMP #$3A with A=$3A work correctly?': 'bugs/cmp_immediate_3a_works.cpp',
 }
