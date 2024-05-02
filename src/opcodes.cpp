@@ -1,5 +1,5 @@
 #include "v6502/opcodes.h"
-#include "v6502/modes.h"
+#include "v6502/opcodeMap.h"
 
 // load
 OPCODE(lda);

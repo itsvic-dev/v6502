@@ -1,10 +1,10 @@
 #include "v6502/cpu.h"
+#include "v6502/internal.h"
 #include "v6502/opcodes.h"
-#include "v6502/print.h"
 
 OPCODE(adc) {
   if (FLAG_IS_SET(cpu->status, STATUS_DECIMAL)) {
-    print("[v6502] ADC: warn: decimal mode is not supported yet\n");
+    v6502Internal::logWarning("ADC: decimal mode is not supported yet");
   }
   int16_t result = cpu->a + cpu->fetchByteWithMode(mode) +
                    FLAG_IS_SET(cpu->status, STATUS_CARRY);
@@ -54,7 +54,7 @@ OPCODE(cpy) {
 
 OPCODE(sbc) {
   if (FLAG_IS_SET(cpu->status, STATUS_DECIMAL)) {
-    print("[v6502] SBC: warn: decimal mode is not supported yet\n");
+    v6502Internal::logWarning("SBC: decimal mode is not supported yet");
   }
   int16_t result = cpu->a - cpu->fetchByteWithMode(mode) -
                    !FLAG_IS_SET(cpu->status, STATUS_CARRY);

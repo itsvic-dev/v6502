@@ -12,6 +12,7 @@ v6502_inc = include_directories('inc')
 v6502_lib = library('v6502',
 
   'src/cpu.cpp',
+  'src/internal.cpp',
   'src/opcodes.cpp',
   'src/opcodes/arith.cpp',
   'src/opcodes/branch.cpp',

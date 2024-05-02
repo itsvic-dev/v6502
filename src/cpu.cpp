@@ -1,12 +1,8 @@
 #include "v6502/cpu.h"
 #include "v6502/memory.h"
 #include "v6502/modes.h"
-#include "v6502/opcodes.h"
+#include "v6502/opcodeMap.h"
 #include "v6502/print.h"
-#include <cstdint>
-#include <cstdio>
-#include <exception>
-#include <format>
 
 CPU::CPU(MemoryBus *bus) : bus(bus) {}
 
