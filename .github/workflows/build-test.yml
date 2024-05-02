@@ -2,15 +2,7 @@ name: Meson CI
 
 on:
   push:
-    paths:
-      - "**.cpp"
-      - "**.h"
-      - "**/meson.build"
   pull_request:
-    paths:
-      - "**.cpp"
-      - "**.h"
-      - "**/meson.build"
 
 jobs:
   build:
