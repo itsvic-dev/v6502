@@ -3,11 +3,13 @@
 #include "v6502/opcodeMap.h"
 
 // load
+OPCODE(lax); // Undocumented.
 OPCODE(lda);
-OPCODE(sta);
 OPCODE(ldx);
-OPCODE(stx);
 OPCODE(ldy);
+OPCODE(sax); // Undocumented.
+OPCODE(sta);
+OPCODE(stx);
 OPCODE(sty);
 
 // trans
@@ -83,6 +85,14 @@ OPCODE(nop_mode);
 
 std::map<uint8_t, Opcode> cpuOpcodes = {
     // load
+    {0xAB, {"*LAX #$%02x", lax, IMMEDIATE}},
+    {0xAF, {"*LAX $%04x", lax, ABSOLUTE}},
+    {0xBF, {"*LAX $%04x,Y", lax, Y_ABSOLUTE}},
+    {0xA7, {"*LAX $%02x", lax, ZERO_PAGE}},
+    {0xB7, {"*LAX $%02x,Y", lax, Y_ZERO_PAGE}},
+    {0xA3, {"*LAX ($%02x,X)", lax, X_ZP_INDIRECT}},
+    {0xB3, {"*LAX ($%02x),Y", lax, ZP_INDIRECT_Y}},
+
     {0xA9, {"LDA #$%02x", lda, IMMEDIATE}},
     {0xAD, {"LDA $%04x", lda, ABSOLUTE}},
     {0xBD, {"LDA $%04x,X", lda, X_ABSOLUTE}},
@@ -92,6 +102,23 @@ std::map<uint8_t, Opcode> cpuOpcodes = {
     {0xA1, {"LDA ($%02x,X)", lda, X_ZP_INDIRECT}},
     {0xB1, {"LDA ($%02x),Y", lda, ZP_INDIRECT_Y}},
 
+    {0xA2, {"LDX #$%02x", ldx, IMMEDIATE}},
+    {0xAE, {"LDX $%04x", ldx, ABSOLUTE}},
+    {0xBE, {"LDX $%04x,Y", ldx, Y_ABSOLUTE}},
+    {0xA6, {"LDX $%02x", ldx, ZERO_PAGE}},
+    {0xB6, {"LDX $%02x,Y", ldx, Y_ZERO_PAGE}},
+
+    {0xA0, {"LDY #$%02x", ldy, IMMEDIATE}},
+    {0xAC, {"LDY $%04x", ldy, ABSOLUTE}},
+    {0xBC, {"LDY $%04x,X", ldy, X_ABSOLUTE}},
+    {0xA4, {"LDY $%02x", ldy, ZERO_PAGE}},
+    {0xB4, {"LDY $%02x,X", ldy, X_ZERO_PAGE}},
+
+    {0x8F, {"*SAX $%04x", stx, ABSOLUTE}},
+    {0x87, {"*SAX $%02x", stx, ZERO_PAGE}},
+    {0x97, {"*SAX $%02x,Y", stx, Y_ZERO_PAGE}},
+    {0x83, {"*SAX ($%02x,X)", stx, X_ZP_INDIRECT}},
+
     {0x8D, {"STA $%04x", sta, ABSOLUTE}},
     {0x9D, {"STA $%04x,X", sta, X_ABSOLUTE}},
     {0x99, {"STA $%04x,Y", sta, Y_ABSOLUTE}},
@@ -100,21 +127,9 @@ std::map<uint8_t, Opcode> cpuOpcodes = {
     {0x81, {"STA ($%02x,X)", sta, X_ZP_INDIRECT}},
     {0x91, {"STA ($%02x),Y", sta, ZP_INDIRECT_Y}},
 
-    {0xA2, {"LDX #$%02x", ldx, IMMEDIATE}},
-    {0xAE, {"LDX $%04x", ldx, ABSOLUTE}},
-    {0xBE, {"LDX $%04x,Y", ldx, Y_ABSOLUTE}},
-    {0xA6, {"LDX $%02x", ldx, ZERO_PAGE}},
-    {0xB6, {"LDX $%02x,Y", ldx, Y_ZERO_PAGE}},
-
     {0x8E, {"STX $%04x", stx, ABSOLUTE}},
     {0x86, {"STX $%02x", stx, ZERO_PAGE}},
     {0x96, {"STX $%02x,Y", stx, Y_ZERO_PAGE}},
-
-    {0xA0, {"LDY #$%02x", ldy, IMMEDIATE}},
-    {0xAC, {"LDY $%04x", ldy, ABSOLUTE}},
-    {0xBC, {"LDY $%04x,X", ldy, X_ABSOLUTE}},
-    {0xA4, {"LDY $%02x", ldy, ZERO_PAGE}},
-    {0xB4, {"LDY $%02x,X", ldy, X_ZERO_PAGE}},
 
     {0x8C, {"STY $%04x", sty, ABSOLUTE}},
     {0x84, {"STY $%02x", sty, ZERO_PAGE}},
@@ -218,6 +233,7 @@ std::map<uint8_t, Opcode> cpuOpcodes = {
     {0xC4, {"CPY $%02x", cpy, ZERO_PAGE}},
 
     {0xE9, {"SBC #$%02x", sbc, IMMEDIATE}},
+    {0xEB, {"*SBC #$%02x", sbc, IMMEDIATE}},
     {0xED, {"SBC $%04x", sbc, ABSOLUTE}},
     {0xFD, {"SBC $%04x,X", sbc, X_ABSOLUTE}},
     {0xF9, {"SBC $%04x,Y", sbc, Y_ABSOLUTE}},
