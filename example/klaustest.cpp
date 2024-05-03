@@ -43,9 +43,16 @@ int main(int argc, char **argv) {
   // override read PC with Klaus test start
   cpu.pc = 0x400;
 
+  uint16_t prevPc = 0;
+
   try {
     while (true) {
+      prevPc = cpu.pc;
       cpu.executeStep();
+      if (cpu.pc == prevPc) {
+        print("caught trap on PC ${:04x}\n", prevPc);
+        break;
+      }
     }
   } catch (...) {
     print("[warn] execution ended prematurely due to a v6502 error!!!\n");

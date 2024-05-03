@@ -17,9 +17,12 @@ tests = {
     'instructions(arith) - ADC #$01': 'instructions/arith/adc-1.cpp',
     'instructions(arith) - ADC #$01 with A=$FF': 'instructions/arith/adc-1-ff.cpp',
     'instructions(arith) - ADC #$01 with A=$7F': 'instructions/arith/adc-1-7f.cpp',
+    'instructions(arith) - ADC #$80': 'instructions/arith/adc-80.cpp',
+    'instructions(arith) - CMP #$3A with A=$3A': 'instructions/arith/cmp-3a-3a.cpp',
     'instructions(arith) - SBC #$01': 'instructions/arith/sbc-1.cpp',
     'instructions(arith) - SBC #$01 with A=$02': 'instructions/arith/sbc-1-02.cpp',
     'instructions(arith) - SBC #$01 with A=$80': 'instructions/arith/sbc-1-80.cpp',
+    'instructions(arith) - SBC #$FE with A=$7F': 'instructions/arith/sbc-fe-7f.cpp',
 
     'instructions(branch) - BCC with clear carry': 'instructions/branch/bcc-clear.cpp',
     'instructions(branch) - BCC with set carry': 'instructions/branch/bcc-set.cpp',
@@ -40,9 +43,6 @@ tests = {
 
     'instructions(shift) - ASL A with A=$80': 'instructions/shift/asl-a-80.cpp',
     'instructions(shift) - ROL A with set carry': 'instructions/shift/rol-sec.cpp',
-
-    # old bugs
-    'old bugs - does CMP #$3A with A=$3A work correctly?': 'bugs/cmp_immediate_3a_works.cpp',
 }
 
 foreach name, sources : tests
