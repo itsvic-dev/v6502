@@ -6,8 +6,12 @@
 
 CPU::CPU(MemoryBus *bus) : bus(bus) {}
 
-uint16_t CPU::readWord(uint16_t addr) {
-  return bus->read(addr) | ((uint16_t)bus->read(addr + 1) << 8);
+uint16_t CPU::readWord(uint16_t addr, bool crossPage) {
+  uint16_t highAddr = addr + 1;
+  if (!crossPage) {
+    highAddr = (highAddr & 0xff) | (addr & 0xff00);
+  }
+  return bus->read(addr) | ((uint16_t)bus->read(highAddr) << 8);
 }
 
 uint8_t CPU::fetchByte() { return bus->read(pc++); }
@@ -25,8 +29,6 @@ uint8_t CPU::fetchByteWithMode(AddressingMode mode) {
     return bus->read(fetchWord() + x);
   case Y_ABSOLUTE:
     return bus->read(fetchWord() + y);
-  case ABSOLUTE_INDIRECT:
-    return bus->read(readWord(fetchWord()));
   case ZERO_PAGE:
     return bus->read(fetchByte());
   case X_ZERO_PAGE:
@@ -44,8 +46,6 @@ uint8_t CPU::fetchByteWithMode(AddressingMode mode) {
 
 uint16_t CPU::fetchEffectiveModeValue(AddressingMode mode) {
   switch (mode) {
-  case ACCUMULATOR:
-    return a;
   case IMMEDIATE:
     return fetchByte();
   case ABSOLUTE:
@@ -55,7 +55,7 @@ uint16_t CPU::fetchEffectiveModeValue(AddressingMode mode) {
   case Y_ABSOLUTE:
     return fetchWord() + y;
   case ABSOLUTE_INDIRECT:
-    return readWord(fetchWord());
+    return readWord(fetchWord(), false);
   case ZERO_PAGE:
     return fetchByte();
   case X_ZERO_PAGE:

@@ -42,7 +42,7 @@ public:
   void pushStack(uint8_t data);
   uint8_t popStack();
 
-  uint16_t readWord(uint16_t addr);
+  uint16_t readWord(uint16_t addr, bool crossPage = true);
   uint8_t fetchByte();
   uint16_t fetchWord();
 
