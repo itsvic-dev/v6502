@@ -6,15 +6,15 @@ OPCODE(adc) {
   if (FLAG_IS_SET(cpu->status, STATUS_DECIMAL)) {
     v6502Internal::logWarning("ADC: decimal mode is not supported yet");
   }
-  int16_t result = cpu->a + cpu->fetchByteWithMode(mode) +
-                   FLAG_IS_SET(cpu->status, STATUS_CARRY);
+  uint8_t m = cpu->fetchByteWithMode(mode);
+  int16_t result = cpu->a + m + FLAG_IS_SET(cpu->status, STATUS_CARRY);
 
   cpu->clearFlags(STATUS_CARRY | STATUS_OVERFLOW);
-  if ((result & 0x80) == 0x80 && (cpu->a & 0x80) != 0x80) {
-    cpu->setFlags(STATUS_OVERFLOW);
-  }
   if (result > 0xff) {
     cpu->setFlags(STATUS_CARRY);
+  }
+  if ((m ^ result) & (cpu->a ^ result) & 0x80) {
+    cpu->setFlags(STATUS_OVERFLOW);
   }
 
   cpu->a = result & 0xFF;
@@ -55,14 +55,14 @@ OPCODE(sbc) {
   if (FLAG_IS_SET(cpu->status, STATUS_DECIMAL)) {
     v6502Internal::logWarning("SBC: decimal mode is not supported yet");
   }
-  int16_t result = cpu->a - cpu->fetchByteWithMode(mode) -
-                   !FLAG_IS_SET(cpu->status, STATUS_CARRY);
+  uint8_t m = cpu->fetchByteWithMode(mode);
+  int16_t result = cpu->a - m - !FLAG_IS_SET(cpu->status, STATUS_CARRY);
 
   cpu->clearFlags(STATUS_CARRY | STATUS_OVERFLOW);
   if (result >= 0) {
     cpu->setFlags(STATUS_CARRY);
   }
-  if ((result & 0x80) != 0x80 && (cpu->a & 0x80) == 0x80) {
+  if ((~m ^ result) & (cpu->a ^ result) & 0x80) {
     cpu->setFlags(STATUS_OVERFLOW);
   }
 

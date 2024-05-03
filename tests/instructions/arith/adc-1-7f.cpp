@@ -11,5 +11,8 @@ TEST {
   cpu->executeStep();
 
   assert(cpu->a == 0x80);
-  STATUS_ASSERT(STATUS_NEGATIVE | STATUS_OVERFLOW);
+  assert(FLAG_IS_SET(cpu->status, STATUS_NEGATIVE));
+  assert(FLAG_IS_SET(cpu->status, STATUS_OVERFLOW));
+  assert(FLAG_IS_CLEAR(cpu->status, STATUS_ZERO));
+  assert(FLAG_IS_CLEAR(cpu->status, STATUS_CARRY));
 }
