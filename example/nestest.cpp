@@ -28,21 +28,20 @@ int main(int argc, char **argv) {
   SimpleRAMBus bus;
   CPU cpu(&bus);
 
-  uint16_t addr = 0xC000;
+  // offset by the NES file header lol
+  uint16_t addr = 0xC000 - 16;
   {
     std::ifstream bin(argv[1]);
     char byte;
-    while (bin.get(byte)) {
-      // offset by the NES file header lol
-      bus.write((addr++) - 16, byte);
+    while (bin.get(byte) && addr >= 0xC000 - 16) {
+      bus.write(addr++, byte);
     }
   }
 
-  bus.write(0xFFFC, 0x00);
-  bus.write(0xFFFD, 0xC0);
-
   print("resetting CPU\n");
   cpu.reset();
+  // override read PC with NESTEST automation start
+  cpu.pc = 0xC000;
 
   try {
     while (true) {

@@ -51,6 +51,7 @@ OPCODE(inx);
 OPCODE(iny);
 
 // ctrl
+OPCODE(brk);
 OPCODE(jmp);
 OPCODE(jsr);
 OPCODE(rti);
@@ -242,6 +243,7 @@ std::map<uint8_t, Opcode> cpuOpcodes = {
     {0xC8, {"INY", iny}},
 
     // ctrl
+    {0x00, {"BRK", brk}},
     {0x4C, {"JMP $%04x", jmp, ABSOLUTE}},
     {0x6C, {"JMP ($%04x)", jmp, ABSOLUTE_INDIRECT}},
     {0x20, {"JSR $%04x", jsr, ABSOLUTE}},

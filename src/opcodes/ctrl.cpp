@@ -1,6 +1,14 @@
 #include "v6502/opcodes.h"
 #include <cstdint>
 
+OPCODE(brk) {
+  (void)mode;
+  cpu->pushStack((cpu->pc >> 8) & 0xff);
+  cpu->pushStack(cpu->pc & 0xff);
+  cpu->pushStack(cpu->status);
+  cpu->pc = cpu->readWord(0xFFFE);
+}
+
 OPCODE(jmp) { cpu->pc = cpu->fetchEffectiveModeValue(mode); }
 
 OPCODE(jsr) {
