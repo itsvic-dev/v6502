@@ -109,13 +109,14 @@ static uint16_t getDisasmOperand(CPU *cpu, AddressingMode mode) {
   case Y_ZERO_PAGE:
   case X_ZP_INDIRECT:
   case ZP_INDIRECT_Y:
-    return cpu->bus->read(cpu->pc - 1);
+    return cpu->bus->read(cpu->pc);
   case ABSOLUTE:
   case X_ABSOLUTE:
   case Y_ABSOLUTE:
-    return cpu->readWord(cpu->pc - 2);
+  case ABSOLUTE_INDIRECT:
+    return cpu->readWord(cpu->pc);
   case RELATIVE:
-    return cpu->pc + (int8_t)(cpu->readWord(cpu->pc - 2));
+    return cpu->pc + 2 + (int8_t)(cpu->readWord(cpu->pc));
   default:
     return 0;
   }
@@ -126,14 +127,16 @@ void CPU::executeStep() {
   uint8_t opcode = fetchByte();
   if (!cpuOpcodes.contains(opcode)) {
     print_err("[v6502] unknown CPU opcode encountered: {:02x}\n", opcode);
-    std::terminate();
+    throw 1;
   }
   auto instruction = cpuOpcodes[opcode];
-  instruction.function(this, instruction.mode);
 #ifdef V6502_DEBUG
   char disasmInstruction[256] = {0};
   snprintf(disasmInstruction, 256, instruction.basicInfo.c_str(),
            getDisasmOperand(this, instruction.mode));
+#endif
+  instruction.function(this, instruction.mode);
+#ifdef V6502_DEBUG
   print_err(
       "{: <16}  A:{:02x}  X:{:02x}  Y:{:02x}  P:{:02x}  SP:{:02x}  PC:{:04x}\n",
       disasmInstruction, a, x, y, status, sp, pc);

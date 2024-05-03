@@ -41,3 +41,9 @@ executable(
   'example/loadram.cpp',
   dependencies: v6502_dep,
 )
+
+executable(
+  'v6502_nestest',
+  'example/nestest.cpp',
+  dependencies: v6502_dep,
+)
