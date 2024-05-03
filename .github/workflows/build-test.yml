@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v22
       - name: Configure project
-        run: nix develop -c -- meson setup builddir/ -Doptimization=1 -Ddebug_logs=true
+        run: nix develop -c -- meson setup builddir/ -Doptimization=1 -Ddebug_logs=true -Dtests=true
       - name: Run Tests
         run: nix develop -c -- meson test -C builddir/ -v
       - name: Upload Test Log

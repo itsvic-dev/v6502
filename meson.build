@@ -35,7 +35,6 @@ v6502_dep = declare_dependency(
   include_directories: v6502_inc,
 )
 
-subdir('tests')
 
 executable(
   'v6502_loadram',
@@ -43,14 +42,18 @@ executable(
   dependencies: v6502_dep,
 )
 
-executable(
-  'v6502_nestest',
-  'example/nestest.cpp',
-  dependencies: v6502_dep,
-)
+if get_option('tests')
+  executable(
+    'v6502_nestest',
+    'example/nestest.cpp',
+    dependencies: v6502_dep,
+  )
 
-executable(
-  'v6502_klaustest',
-  'example/klaustest.cpp',
-  dependencies: v6502_dep,
-)
+  executable(
+    'v6502_klaustest',
+    'example/klaustest.cpp',
+    dependencies: v6502_dep,
+  )
+
+  subdir('tests')
+endif
