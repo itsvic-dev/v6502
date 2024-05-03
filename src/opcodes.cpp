@@ -1,4 +1,5 @@
 #include "v6502/opcodes.h"
+#include "v6502/modes.h"
 #include "v6502/opcodeMap.h"
 
 // load
@@ -77,10 +78,8 @@ OPCODE(sed);
 OPCODE(sei);
 
 // nop
-OPCODE(nop) {
-  (void)cpu;
-  (void)mode;
-}
+OPCODE(nop_implied);
+OPCODE(nop_mode);
 
 std::map<uint8_t, Opcode> cpuOpcodes = {
     // load
@@ -270,5 +269,32 @@ std::map<uint8_t, Opcode> cpuOpcodes = {
     {0x78, {"SEI", sei}},
 
     // nop
-    {0xEA, {"NOP", nop}},
+    {0x1A, {"*NOP", nop_implied}},
+    {0x3A, {"*NOP", nop_implied}},
+    {0x5A, {"*NOP", nop_implied}},
+    {0x7A, {"*NOP", nop_implied}},
+    {0xDA, {"*NOP", nop_implied}},
+    {0xEA, {"NOP", nop_implied}},
+    {0xFA, {"*NOP", nop_implied}},
+    {0x80, {"*NOP #$%02x", nop_mode, IMMEDIATE}},
+    {0x82, {"*NOP #$%02x", nop_mode, IMMEDIATE}},
+    {0x89, {"*NOP #$%02x", nop_mode, IMMEDIATE}},
+    {0xC2, {"*NOP #$%02x", nop_mode, IMMEDIATE}},
+    {0xE2, {"*NOP #$%02x", nop_mode, IMMEDIATE}},
+    {0x0C, {"*NOP $%04x", nop_mode, ABSOLUTE}},
+    {0x1C, {"*NOP $%04x,X", nop_mode, X_ABSOLUTE}},
+    {0x3C, {"*NOP $%04x,X", nop_mode, X_ABSOLUTE}},
+    {0x5C, {"*NOP $%04x,X", nop_mode, X_ABSOLUTE}},
+    {0x7C, {"*NOP $%04x,X", nop_mode, X_ABSOLUTE}},
+    {0xDC, {"*NOP $%04x,X", nop_mode, X_ABSOLUTE}},
+    {0xFC, {"*NOP $%04x,X", nop_mode, X_ABSOLUTE}},
+    {0x04, {"*NOP $%02x", nop_mode, ZERO_PAGE}},
+    {0x44, {"*NOP $%02x", nop_mode, ZERO_PAGE}},
+    {0x64, {"*NOP $%02x", nop_mode, ZERO_PAGE}},
+    {0x14, {"*NOP $%02x,X", nop_mode, X_ZERO_PAGE}},
+    {0x34, {"*NOP $%02x,X", nop_mode, X_ZERO_PAGE}},
+    {0x54, {"*NOP $%02x,X", nop_mode, X_ZERO_PAGE}},
+    {0x74, {"*NOP $%02x,X", nop_mode, X_ZERO_PAGE}},
+    {0xD4, {"*NOP $%02x,X", nop_mode, X_ZERO_PAGE}},
+    {0xF4, {"*NOP $%02x,X", nop_mode, X_ZERO_PAGE}},
 };
