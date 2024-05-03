@@ -96,7 +96,7 @@ uint8_t CPU::popStack() { return bus->read(0x100 + ++sp); }
 void CPU::reset() {
   // CPU does 3 fake writes to the stack during reset
   sp -= 3;
-  setFlags(STATUS_INTERRUPT_DISABLE);
+  setFlags(STATUS_INTERRUPT_DISABLE | STATUS_BREAK_COMMAND);
   this->pc = readWord(0xFFFC);
 }
 
@@ -116,7 +116,7 @@ static uint16_t getDisasmOperand(CPU *cpu, AddressingMode mode) {
   case ABSOLUTE_INDIRECT:
     return cpu->readWord(cpu->pc);
   case RELATIVE:
-    return cpu->pc + 2 + (int8_t)(cpu->readWord(cpu->pc));
+    return cpu->pc + 1 + (int8_t)(cpu->readWord(cpu->pc));
   default:
     return 0;
   }

@@ -48,3 +48,9 @@ executable(
   'example/nestest.cpp',
   dependencies: v6502_dep,
 )
+
+executable(
+  'v6502_klaustest',
+  'example/klaustest.cpp',
+  dependencies: v6502_dep,
+)

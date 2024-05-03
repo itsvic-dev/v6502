@@ -1,5 +1,4 @@
 #include "testMain.h"
-#include <cassert>
 
 TEST {
   cpu->a = 0x3A;
@@ -8,6 +7,5 @@ TEST {
   cpu->bus->write(1, 0x3A);
   cpu->reset();
   cpu->executeStep();
-  assert(cpu->status == (STATUS_UNUSED | STATUS_INTERRUPT_DISABLE |
-                         STATUS_ZERO | STATUS_CARRY));
+  STATUS_ASSERT(STATUS_ZERO | STATUS_CARRY);
 }

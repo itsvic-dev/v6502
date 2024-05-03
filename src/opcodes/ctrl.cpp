@@ -3,10 +3,12 @@
 
 OPCODE(brk) {
   (void)mode;
-  cpu->pushStack((cpu->pc >> 8) & 0xff);
-  cpu->pushStack(cpu->pc & 0xff);
+  uint16_t nextPc = cpu->pc + 1;
+  cpu->pushStack((nextPc >> 8) & 0xff);
+  cpu->pushStack(nextPc & 0xff);
   cpu->pushStack(cpu->status);
   cpu->pc = cpu->readWord(0xFFFE);
+  cpu->setFlags(STATUS_INTERRUPT_DISABLE | STATUS_BREAK_COMMAND);
 }
 
 OPCODE(jmp) { cpu->pc = cpu->fetchEffectiveModeValue(mode); }
