@@ -20,9 +20,11 @@ OPCODE(ldy) {
   cpu->y = cpu->fetchByteWithMode(mode);
   cpu->evaluateFlags(cpu->y);
 }
+
 OPCODE(sax) { // Undocumented.
   cpu->bus->write(cpu->fetchEffectiveModeValue(mode), cpu->a & cpu->x);
 }
+
 OPCODE(sta) { cpu->bus->write(cpu->fetchEffectiveModeValue(mode), cpu->a); }
 OPCODE(stx) { cpu->bus->write(cpu->fetchEffectiveModeValue(mode), cpu->x); }
 OPCODE(sty) { cpu->bus->write(cpu->fetchEffectiveModeValue(mode), cpu->y); }
