@@ -32,13 +32,13 @@ uint8_t CPU::fetchByteWithMode(AddressingMode mode) {
   case ZERO_PAGE:
     return bus->read(fetchByte());
   case X_ZERO_PAGE:
-    return bus->read(fetchByte() + x);
+    return bus->read((uint8_t)(fetchByte() + x));
   case Y_ZERO_PAGE:
-    return bus->read(fetchByte() + y);
+    return bus->read((uint8_t)(fetchByte() + y));
   case X_ZP_INDIRECT:
-    return bus->read(readWord(fetchByte() + x));
+    return bus->read(readWord((uint8_t)(fetchByte() + x), false));
   case ZP_INDIRECT_Y:
-    return bus->read(readWord(fetchByte()) + y);
+    return bus->read(readWord(fetchByte(), false) + y);
   default:
     throw "invalid mode passed to fetchByteWithMode";
   }
@@ -59,13 +59,13 @@ uint16_t CPU::fetchEffectiveModeValue(AddressingMode mode) {
   case ZERO_PAGE:
     return fetchByte();
   case X_ZERO_PAGE:
-    return fetchByte() + x;
+    return (uint8_t)(fetchByte() + x);
   case Y_ZERO_PAGE:
-    return fetchByte() + y;
+    return (uint8_t)(fetchByte() + y);
   case X_ZP_INDIRECT:
-    return readWord(fetchByte() + x);
+    return readWord((uint8_t)(fetchByte() + x), false);
   case ZP_INDIRECT_Y:
-    return readWord(fetchByte()) + y;
+    return readWord(fetchByte(), false) + y;
   case RELATIVE: {
     int8_t offset = fetchByte();
     // PC now points at the next instruction, apply the offset to PC
