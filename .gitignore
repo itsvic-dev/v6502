@@ -1,3 +1,4 @@
 .envrc
 builddir/
 .cache/
+result
